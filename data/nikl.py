@@ -23,8 +23,8 @@ def main():
     train_path = args.target_dir + '/train/'
     test_path = args.target_dir + '/test/'
 
-    subprocess.call(["local/clean_corpus.sh","$HOME/copora/NIKL",args.target_dir])
-    subprocess.call(["local/data_prep.sh","$HOME/copora/NIKL",args.target_dir])
+    subprocess.call(["local/clean_corpus.sh","/root/KoreanDataSet",args.target_dir])
+    subprocess.call(["local/data_prep.sh","/root/KoreanDataSet",args.target_dir])
 
     print ('\n', 'Creating manifests...')
     create_manifest(train_path, 'nikl_train_manifest.csv', args.min_duration, args.max_duration)

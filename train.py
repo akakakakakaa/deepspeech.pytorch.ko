@@ -12,6 +12,9 @@ from warpctc_pytorch import CTCLoss
 from data.data_loader import AudioDataLoader, SpectrogramDataset, BucketingSampler
 from decoder import GreedyDecoder
 from model import DeepSpeech, supported_rnns
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 parser = argparse.ArgumentParser(description='DeepSpeech training')
 parser.add_argument('--train-manifest', metavar='DIR',
@@ -185,7 +188,8 @@ if __name__ == '__main__':
                     tensorboard_writer.add_scalars(args.id, values, i + 1)
     else:
         with codecs.open(args.labels_path,'r',encoding='utf-8') as label_file:
-            labels = str(''.join(json.load(label_file)))
+            #labels = str(''.join(json.load(label_file)))
+            labels = json.load(label_file)
 
         audio_conf = dict(sample_rate=args.sample_rate,
                           window_size=args.window_size,
@@ -310,7 +314,8 @@ if __name__ == '__main__':
         for i, (data) in tqdm(enumerate(test_loader), total=len(test_loader)):
             inputs, targets, input_percentages, target_sizes = data
 
-            inputs = Variable(inputs, volatile=True)
+            with torch.no_grad():
+                inputs = Variable(inputs);
 
             # unflatten targets
             split_targets = []

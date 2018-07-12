@@ -19,7 +19,7 @@ function nums {
 if [ $stage -le 0 ]; then
 
   find $corpus -name "*.wav" | grep -v "Bad\|Non\|small" | sort | uniq > $data/wav.lst
-  age=$(cat $data/wav.lst | grep -v "Bad\|Non" | cut -d'/' -f6 | sed 's/[0-9].*//g' | sort | uniq)
+  age=$(cat $data/wav.lst | grep -v "Bad\|Non" | cut -d'/' -f4 | sed 's/[0-9].*//g' | sort | uniq)
 
   rm -f $data/wav.test.lst
   rm -f $data/wav.train.lst
@@ -52,7 +52,7 @@ if [ $stage -le 1 ]; then
     mkdir -p $data/$x/nikl/txt
     cat $data/wav.$x.lst | while read wavfile;do
       cp $wavfile $data/$x/nikl/wav
-      uid=$(echo $wavfile | cut -d'/' -f7 | sed 's/.wav//g')
+      uid=$(echo $wavfile | cut -d'/' -f5 | sed 's/.wav//g')
       transid=$(cut -d'_' -f2-3 <<< $uid)
       grep $transid $data/trans.txt | awk '{$1=""}1' | sed 's/^[ \t]*//'g > $data/$x/nikl/txt/$uid.txt
     done

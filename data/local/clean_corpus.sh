@@ -57,7 +57,7 @@ fi
 
 if [ $stage -le 1 ]; then
 
-  grep FAIL $data/*.info | sed 's/data.*file `//g' | sed 's/\.wav.*/.wav/g' > $data/BadRiff_wav.lst
+  grep FAIL $data/*.info | sed 's/.*file `//g' | sed 's/\.wav.*/.wav/g' > $data/BadRiff_wav.lst
   if [ $(wc -l $data/BadRiff_wav.lst | awk '{print $1}') -gt 0 ];then
     mkdir -p $corpus/BadRiff
     cat $data/BadRiff_wav.lst | while read wavfile;do
@@ -90,10 +90,10 @@ fi
 
 if [ $stage -le 3 ]; then
   awk '{print $1}' $data/trans.txt > $data/tid.lst
-  ./run.pl JOB=1:10 $data/wav.JOB.bad \
+  local/run.pl JOB=1:10 $data/wav.JOB.bad \
     local/search_badname.sh $data/wav.JOB.slst $data/tid.lst JOB
 
-  grep NIKL $data/wav.*.bad | sort | sed 's/data.*://g' > $data/BadName_wav.lst
+  grep KoreanDataSet $data/wav.*.bad | sort | sed 's/.*://g' > $data/BadName_wav.lst
 
   if [ $(wc -l $data/BadName_wav.lst | awk '{print $1}') -gt 0 ];then
     echo "Modifying corpus due to bad naming"
